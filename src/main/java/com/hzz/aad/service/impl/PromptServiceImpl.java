@@ -1,6 +1,7 @@
 package com.hzz.aad.service.impl;
 
 import com.hzz.aad.constant.AppConstants;
+import com.hzz.aad.constant.PromptConstants;
 import com.hzz.aad.service.IPromptService;
 import org.springframework.stereotype.Service;
 
@@ -10,79 +11,17 @@ public class PromptServiceImpl implements IPromptService {
     @Override
     public String buildDetectPrompt(String text, String language) {
         String lang = labelOf(language);
-        return """
-            你是一位文本分析专家，评估以下 %s 文本被 AI 生成的可能性。
-
-            【校准说明 - 请严格遵守】
-            - 人类写作也可以结构清晰、使用连接词、有排比句式，这些不是 AI 的独有特征
-            - 仅在你高度确信的情况下才标记 "isAi": true，否则保守标注
-            - 有具体细节、真实案例、个人观点的文本，即使写得很规范，也应判定为人类
-            - 文本中的个别口语表达、小错误或用词重复，属于人类写作的正常现象
-
-            【AI 文本的真实信号】
-            - 内容空洞、套话连篇、缺乏具体信息
-            - 用词模式高度单一、过度模板化
-            - 滥用"首先/其次/最后/值得注意的是/综上所述/不可忽视的是"等程式化连接
-            - 每段结构完全一致（观点+解释+总结）
-            - 叙述缺乏真实细节和个人视角
-
-            【评分规则】
-            - aiRate 请保守评估，只有内容确实高度可疑时才给 70 分以上
-            - 普通规范但内容充实的文本给 10-30
-            - 疑似但有具体细节支撑的给 30-50
-            - 明确模板化空洞文本给 50-100
-
-            请严格按照以下 JSON 格式返回，不要包含任何其他内容：
-            {
-              "aiRate": 0-100 的整数，
-              "segments": [
-                {
-                  "text": "片段原文",
-                  "isAi": true 或 false,
-                  "confidence": 0-100 的整数，
-                  "reason": "判断理由（一句话，%s）"
-                }
-              ],
-              "summary": "整体判断摘要（一句话，%s）"
-            }
-
-            文本内容：
-            ---
-            %s
-            ---
-            """.formatted(lang, lang, lang, text);
+        return PromptConstants.DETECT_PROMPT_TEMPLATE.formatted(lang, lang, lang, text);
     }
 
     @Override
     public String buildRewritePrompt(String text, String language, String style, int targetAiRate) {
-        String lang = labelOf(language);
-        String styleDesc = AppConstants.STYLE_DESCRIPTIONS
-                .getOrDefault(style, "自然流畅的人类写作风格");
-
-        return """
-            你是一位文本改写专家。请将以下 %s 文本改写成%s，使其 AI 生成特征降低到 %d%% 以下，
-            同时保留原意和关键信息。注意避免排比句式、模板化连接词（首先/其次/最后）和每段统一的"观点+解释+总结"结构。
-
-            请严格按照以下 JSON 格式返回，不要包含任何其他内容：
-            {
-              "originalAiRate": 0-100 的整数，原文的 AI 生成概率，
-              "rewrittenText": "改写后的完整文本",
-              "rewrittenAiRate": 0-100 的整数，改写后的 AI 生成概率，
-              "rewriteStyle": "%s",
-              "changes": [
-                {
-                  "original": "原文中被修改的片段",
-                  "rewritten": "改写后的片段",
-                  "reason": "为什么这样改（%s）"
-                }
-              ]
-            }
-
-            文本内容：
-            ---
-            %s
-            ---
-            """.formatted(lang, styleDesc, targetAiRate, style, lang, text);
+        boolean isZh = AppConstants.LANG_ZH.equals(language);
+        String lang = isZh ? AppConstants.LANG_ZH_LABEL : AppConstants.LANG_EN_LABEL;
+        String styleDesc = isZh
+                ? AppConstants.STYLE_DESCRIPTIONS.getOrDefault(style, "自然流畅的人类写作风格")
+                : AppConstants.STYLE_DESCRIPTIONS_EN.getOrDefault(style, "natural human writing style");
+        return PromptConstants.REWRITE_PROMPT_TEMPLATE.formatted(lang, styleDesc, targetAiRate, style, lang, text);
     }
 
     private String labelOf(String language) {

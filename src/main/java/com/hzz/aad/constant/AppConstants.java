@@ -32,6 +32,13 @@ public class AppConstants {
             STYLE_HUMOROUS, "幽默搞笑风格"
     );
 
+    public static final Map<String, String> STYLE_DESCRIPTIONS_EN = Map.of(
+            STYLE_CONVERSATIONAL, "casual and conversational",
+            STYLE_ACADEMIC, "academic writing style",
+            STYLE_JOURNALISTIC, "journalistic style",
+            STYLE_HUMOROUS, "humorous and witty"
+    );
+
     public static final String JSON_START = "{";
     public static final String JSON_END = "}";
 
