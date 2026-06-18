@@ -1,11 +1,13 @@
-package com.hzz.aad.service;
+package com.hzz.aad.service.impl;
 
 import com.hzz.aad.constant.AppConstants;
+import com.hzz.aad.service.IPromptService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PromptService {
+public class PromptServiceImpl implements IPromptService {
 
+    @Override
     public String buildDetectPrompt(String text, String language) {
         String lang = labelOf(language);
         return """
@@ -32,6 +34,7 @@ public class PromptService {
             """.formatted(lang, lang, lang, text);
     }
 
+    @Override
     public String buildRewritePrompt(String text, String language, String style, int targetAiRate) {
         String lang = labelOf(language);
         String styleDesc = AppConstants.STYLE_DESCRIPTIONS

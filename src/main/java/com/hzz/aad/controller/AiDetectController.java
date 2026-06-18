@@ -3,7 +3,7 @@ package com.hzz.aad.controller;
 import com.hzz.aad.common.Result;
 import com.hzz.aad.dto.DetectRequest;
 import com.hzz.aad.dto.RewriteRequest;
-import com.hzz.aad.service.AiDetectService;
+import com.hzz.aad.service.IAiDetectService;
 import com.hzz.aad.vo.DetectResponse;
 import com.hzz.aad.vo.LanguageOption;
 import com.hzz.aad.vo.RewriteResponse;
@@ -16,9 +16,9 @@ import java.util.List;
 @RequestMapping("/api")
 public class AiDetectController {
 
-    private final AiDetectService aiDetectService;
+    private final IAiDetectService aiDetectService;
 
-    public AiDetectController(AiDetectService aiDetectService) {
+    public AiDetectController(IAiDetectService aiDetectService) {
         this.aiDetectService = aiDetectService;
     }
 

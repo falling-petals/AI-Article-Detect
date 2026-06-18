@@ -1,44 +1,37 @@
-package com.hzz.aad.service;
+package com.hzz.aad.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hzz.aad.constant.AppConstants;
 import com.hzz.aad.dto.DetectRequest;
 import com.hzz.aad.dto.RewriteRequest;
+import com.hzz.aad.service.IAiDetectService;
+import com.hzz.aad.service.IPromptService;
 import com.hzz.aad.vo.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
-public class AiDetectService {
-
-    private static final Logger log = LoggerFactory.getLogger(AiDetectService.class);
+@RequiredArgsConstructor
+public class AiDetectServiceImpl implements IAiDetectService {
 
     private final ChatClient chatClient;
-    private final PromptService promptService;
+    private final IPromptService promptService;
     private final ObjectMapper objectMapper;
 
-    public AiDetectService(ChatClient.Builder chatClientBuilder,
-                           PromptService promptService,
-                           ObjectMapper objectMapper) {
-        this.chatClient = chatClientBuilder
-                .defaultAdvisors(new SimpleLoggerAdvisor())
-                .build();
-        this.promptService = promptService;
-        this.objectMapper = objectMapper;
-    }
-
+    @Override
     public DetectResponse detect(DetectRequest request) {
         String prompt = promptService.buildDetectPrompt(request.getText(), request.getLanguage());
         String response = callAi(prompt);
         return parseDetectResponse(response);
     }
 
+    @Override
     public RewriteResponse rewrite(RewriteRequest request) {
         String prompt = promptService.buildRewritePrompt(
                 request.getText(), request.getLanguage(),
@@ -47,6 +40,7 @@ public class AiDetectService {
         return parseRewriteResponse(response);
     }
 
+    @Override
     public List<LanguageOption> getLanguages() {
         return List.of(
                 new LanguageOption(AppConstants.LANG_ZH, AppConstants.LANG_ZH_LABEL),
