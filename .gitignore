@@ -35,6 +35,9 @@ build/
 # Local profile (sensitive config)
 application-local.yaml
 
+# Environment variables
+.env
+
 # Log files
 backend.log
 backend.err
