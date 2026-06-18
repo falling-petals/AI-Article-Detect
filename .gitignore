@@ -31,3 +31,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Local profile (sensitive config)
+application-local.yaml
+
+# Log files
+backend.log
+backend.err
