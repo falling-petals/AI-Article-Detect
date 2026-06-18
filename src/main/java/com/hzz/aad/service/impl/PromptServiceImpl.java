@@ -21,7 +21,7 @@ public class PromptServiceImpl implements IPromptService {
         String styleDesc = isZh
                 ? AppConstants.STYLE_DESCRIPTIONS.getOrDefault(style, "自然流畅的人类写作风格")
                 : AppConstants.STYLE_DESCRIPTIONS_EN.getOrDefault(style, "natural human writing style");
-        return PromptConstants.REWRITE_PROMPT_TEMPLATE.formatted(lang, styleDesc, targetAiRate, style, lang, text);
+        return PromptConstants.REWRITE_PROMPT_TEMPLATE.formatted(lang, styleDesc, targetAiRate, PromptConstants.HUMANIZER_GUIDELINES, style, lang, text);
     }
 
     private String labelOf(String language) {
