@@ -1,0 +1,22 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: AI Article Detect
+  profiles:
+    active: local
+
+  ai:
+    dashscope:
+      api-key: ${DASHSCOPE_API_KEY:}
+      chat:
+        options:
+          model: ${AI_MODEL:}
+
+logging:
+  file:
+    name: backend.log
+  level:
+    com.hzz.aad: debug
+    org.springframework.ai: debug
