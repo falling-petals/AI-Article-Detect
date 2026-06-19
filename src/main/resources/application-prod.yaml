@@ -1,0 +1,4 @@
+logging:
+  level:
+    com.hzz.aad: info
+    org.springframework.ai: warn
