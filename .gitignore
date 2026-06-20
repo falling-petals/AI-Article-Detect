@@ -43,3 +43,9 @@ application-prod.yaml
 backend.log
 backend.err
 *.log
+
+# Frontend
+frontend/node_modules
+frontend/dist
+frontend/dist-ssr
+frontend/*.local

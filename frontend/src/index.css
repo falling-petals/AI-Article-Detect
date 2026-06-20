@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Fira+Sans:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-heading: "Fira Code", monospace;
+  --font-body: "Fira Sans", sans-serif;
+  --animate-slide-down: slideDown 0.3s cubic-bezier(0.21, 1.02, 0.73, 1);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-0.75rem) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.14), transparent 34rem),
+    linear-gradient(135deg, rgba(15, 23, 42, 0.04) 25%, transparent 25%) 0 0 / 28px 28px,
+    #F8FAFC;
+  min-height: 100vh;
+  color: #0F172A;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: #F97316;
+  color: white;
+}
+
+button,
+textarea,
+input {
+  font: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
